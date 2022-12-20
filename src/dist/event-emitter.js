@@ -15,7 +15,7 @@ var EventEmitter = /** @class */ (function () {
         }
         console.log(this.callbacksListPerEvent);
         return {
-            unsubscribe: function () { _this.unsubscribe(eventName, callbackFunc); }
+            unsubscribe: function () { return _this.unsubscribe(eventName, callbackFunc); }
         };
     };
     EventEmitter.prototype.emit = function (eventName, eventProps) {

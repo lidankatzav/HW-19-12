@@ -7,7 +7,7 @@ class EventEmitter {
         this.callbacksListPerEvent = callbacksListPerEvent;
     }
 
-    subscribe(eventName: string, callbackFunc: Function): any {
+    subscribe(eventName: string, callbackFunc: Function): {unsubscribe: Function} {
         if(eventName in this.callbacksListPerEvent) {
             if(!this.callbacksListPerEvent[eventName].includes(callbackFunc)) {
                 this.callbacksListPerEvent[eventName].push(callbackFunc);
@@ -18,7 +18,7 @@ class EventEmitter {
         }
         console.log(this.callbacksListPerEvent);
         return {
-            unsubscribe: () => {this.unsubscribe(eventName, callbackFunc)},
+            unsubscribe: () => this.unsubscribe(eventName, callbackFunc)
         };
     }
 
