@@ -68,7 +68,7 @@ class NotGate extends UnaryGate {
     }
 }
 
-// Main - NAnd-Gate
+// Main - NAND-Gate
 
 const numbersArrayFirstCol = [0,0,1,1];
 const numbersArraySecondCol = [0,1,0,1];
