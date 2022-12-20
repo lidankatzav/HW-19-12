@@ -4,26 +4,47 @@ var EventEmitter = /** @class */ (function () {
         this.callbacksListPerEvent = callbacksListPerEvent;
     }
     EventEmitter.prototype.subscribe = function (eventName, callbackFunc) {
+        var _this = this;
         if (eventName in this.callbacksListPerEvent) {
-            this.callbacksListPerEvent[eventName].push(callbackFunc);
+            if (!this.callbacksListPerEvent[eventName].includes(callbackFunc)) {
+                this.callbacksListPerEvent[eventName].push(callbackFunc);
+            }
         }
         else {
             this.callbacksListPerEvent[eventName] = [callbackFunc];
         }
         console.log(this.callbacksListPerEvent);
+        return {
+            unsubscribe: function () { _this.unsubscribe(eventName, callbackFunc); }
+        };
     };
     EventEmitter.prototype.emit = function (eventName, eventProps) {
         if (eventName in this.callbacksListPerEvent) {
+            this.callbacksListPerEvent[eventName].forEach(function (callbackFunc) {
+                return callbackFunc(eventProps);
+            });
         }
+    };
+    EventEmitter.prototype.unsubscribe = function (eventName, callbackFuncToRemove) {
+        this.callbacksListPerEvent[eventName] = this.callbacksListPerEvent[eventName].filter(function (callbackFunc) { return callbackFunc !== callbackFuncToRemove; });
+        if (this.callbacksListPerEvent[eventName].length === 0) {
+            this.callbacksListPerEvent[eventName] = undefined;
+        }
+        console.log(this.callbacksListPerEvent);
     };
     return EventEmitter;
 }());
+var logFunc1 = function (props) {
+    console.log(props.key);
+};
+var logFunc2 = function (props) {
+    console.log(props.key);
+};
 var eventEmitter = new EventEmitter();
-var stamFunc = function () {
-    console.log("hi");
-};
-var stamFunc2 = function () {
-    console.log("hi");
-};
-eventEmitter.subscribe('keydown', stamFunc);
-eventEmitter.subscribe('keydown', stamFunc2);
+var keydownSubscription1 = eventEmitter.subscribe('keydown', logFunc1);
+var keydownSubscription2 = eventEmitter.subscribe('keydown', logFunc2);
+eventEmitter.emit('keydown', { key: 'Enter' });
+keydownSubscription1.unsubscribe();
+eventEmitter.emit('keydown', { key: 'Enter' });
+var keydownSubscription3 = eventEmitter.subscribe('keydown', logFunc1);
+eventEmitter.emit('keydown', { key: 'Enter' });
