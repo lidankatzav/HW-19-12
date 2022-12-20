@@ -68,7 +68,7 @@ var NotGate = /** @class */ (function (_super) {
     };
     return NotGate;
 }(UnaryGate));
-// Main - Nand Gate
+// Main - NAnd-Gate
 var numbersArrayFirstCol = [0, 0, 1, 1];
 var numbersArraySecondCol = [0, 1, 0, 1];
 for (var i = 0; i < numbersArrayFirstCol.length; i++) {
