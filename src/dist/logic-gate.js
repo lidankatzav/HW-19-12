@@ -16,22 +16,28 @@ var __extends = (this && this.__extends) || (function () {
 var UnaryGate = /** @class */ (function () {
     function UnaryGate(input) {
         this.inputA = input;
-        this.output = undefined;
     }
+    UnaryGate.prototype.getOutput = function () {
+        return this.output;
+    };
     return UnaryGate;
 }());
 var BinaryGate = /** @class */ (function () {
     function BinaryGate(inputA, inputB) {
         this.inputA = inputA;
         this.inputB = inputB;
-        this.output = undefined;
     }
+    BinaryGate.prototype.getOutput = function () {
+        return this.output;
+    };
     return BinaryGate;
 }());
 var AndGate = /** @class */ (function (_super) {
     __extends(AndGate, _super);
     function AndGate(inputA, inputB) {
-        return _super.call(this, inputA, inputB) || this;
+        var _this = _super.call(this, inputA, inputB) || this;
+        _this.output = _this.performGateLogic();
+        return _this;
     }
     AndGate.prototype.performGateLogic = function () {
         return (this.inputA === 1 && this.inputB === 1) ? 1 : 0;
@@ -41,7 +47,9 @@ var AndGate = /** @class */ (function (_super) {
 var OrGate = /** @class */ (function (_super) {
     __extends(OrGate, _super);
     function OrGate(inputA, inputB) {
-        return _super.call(this, inputA, inputB) || this;
+        var _this = _super.call(this, inputA, inputB) || this;
+        _this.output = _this.performGateLogic();
+        return _this;
     }
     OrGate.prototype.performGateLogic = function () {
         return (this.inputA === 1 || this.inputB === 1) ? 1 : 0;
@@ -51,10 +59,22 @@ var OrGate = /** @class */ (function (_super) {
 var NotGate = /** @class */ (function (_super) {
     __extends(NotGate, _super);
     function NotGate(input) {
-        return _super.call(this, input) || this;
+        var _this = _super.call(this, input) || this;
+        _this.output = _this.performGateLogic();
+        return _this;
     }
     NotGate.prototype.performGateLogic = function () {
         return (this.inputA === 1) ? 0 : 1;
     };
     return NotGate;
 }(UnaryGate));
+// Main
+var numbersArrayFirstCol = [0, 0, 1, 1];
+var numbersArraySecondCol = [0, 1, 0, 1];
+for (var i = 0; i < numbersArrayFirstCol.length; i++) {
+    var firstInput = numbersArrayFirstCol[i];
+    var secondInput = numbersArraySecondCol[i];
+    var andGateOutput = new AndGate(firstInput, secondInput).getOutput();
+    var nandGateOutput = new NotGate(andGateOutput).getOutput();
+    console.log("Input A ".concat(firstInput, " Input B ").concat(secondInput, " Output ").concat(nandGateOutput));
+}
